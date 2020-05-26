@@ -16,7 +16,22 @@
 
   <div class="container">
 
-    <button class='btn' id='random-button'>Randomize!</button>
+    <div class="generation-select">
+      <select name="generations" id="generations">
+        <option value="All-Generations">All Generations</option>
+        <option value="Generation-I">Generation I</option>
+        <option value="Generation-II">Generation II</option>
+        <option value="Generation-III">Generation III</option>
+        <option value="Generation-IV">Generation IV</option>
+        <option value="Generation-V">Generation V</option>
+        <option value="Generation-VI">Generation VI</option>
+        <option value="Generation-VII">Generation VII</option>
+      </select>
+      <button class='btn' id='random-button'>Randomize!</button>
+      <button class="btn" id='start-interval'>Start Interval</button>
+      <button class="btn" id='end-interval'>End Interval</button>
+    </div>
+
 
 
     <div id="number-select">
@@ -43,6 +58,10 @@
       </div>
     </div>
 
+    <div id="name-error-container">
+      <!-- <div>Error message!</div> -->
+    </div>
+
 
     <div class="card">
 
@@ -58,6 +77,10 @@
         <div class="row ID-row">
           <p>Number</p>
           <!-- <p id='insert-ID'>1</p> -->
+        </div>
+        <div class="row gen-row">
+          <p>Generation</p>
+          <!-- <p id='insert-gen'>I</p> -->
         </div>
         <div class="row type-row">
           <p>Type</p>

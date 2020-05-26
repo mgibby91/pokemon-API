@@ -16,17 +16,71 @@ const typeBG = [
   { type: 'rock', bg: 'rgb(184, 160, 56, 0.75)' },
   { type: 'ghost', bg: 'rgb(97, 76, 131, 0.75)' },
   { type: 'ice', bg: 'rgb(152, 216, 216, 0.75)' },
-  { type: 'dragon', bg: 'rgb(112, 10, 238, 0.75)' }
+  { type: 'dragon', bg: 'rgb(112, 10, 238, 0.75)' },
+  { type: 'dark', bg: 'rgb(92, 72, 59, 0.75)' },
+  { type: 'steel', bg: 'rgb(184, 184, 208, 0.75)' }
 ];
+
+// Global DOM elements used in multiple functions
+const nameErrorContainer = document.querySelector('#name-error-container');
+
+// Generate random number based on select option chosen
+const selectGeneration = document.querySelector('#generations');
+selectGeneration.addEventListener('select', randomNumberSet);
+function randomNumberSet() {
+
+  let randomNum;
+
+  if (selectGeneration.value === 'All-Generations') {
+    randomNum = Math.floor(Math.random() * 807 + 1);
+  } else if (selectGeneration.value === 'Generation-I') {
+    randomNum = Math.floor(Math.random() * 151 + 1);
+  } else if (selectGeneration.value === 'Generation-II') {
+    randomNum = Math.floor(Math.random() * 100 + 152);
+  } else if (selectGeneration.value === 'Generation-III') {
+    randomNum = Math.floor(Math.random() * 134 + 252);
+  } else if (selectGeneration.value === 'Generation-IV') {
+    randomNum = Math.floor(Math.random() * 106 + 387);
+  } else if (selectGeneration.value === 'Generation-V') {
+    randomNum = Math.floor(Math.random() * 155 + 494);
+  } else if (selectGeneration.value === 'Generation-VI') {
+    randomNum = Math.floor(Math.random() * 71 + 650);
+  } else if (selectGeneration.value === 'Generation-VII') {
+    randomNum = Math.floor(Math.random() * 85 + 722);
+  }
+
+  return randomNum;
+}
+
+
+// Start Interval button event listener
+document.querySelector('#start-interval').addEventListener('click', intervalRandom);
+function intervalRandom() {
+
+  const int = setInterval(() => {
+    timer();
+  }, 2000);
+
+  function timer() {
+    const rand = randomNumberSet();
+    apiCall(rand);
+  }
+
+  // End Interval remove event listener
+  document.querySelector('#end-interval').addEventListener('click', function () {
+    clearInterval(int);
+  });
+
+}
 
 
 // Randomize button event listener
 document.querySelector('#random-button').addEventListener('click', randomPokeAPI);
 function randomPokeAPI() {
 
-  const randomNum = Math.floor(Math.random() * 151 + 1);
+  const rand = randomNumberSet();
 
-  apiCall(randomNum);
+  apiCall(rand);
 }
 
 randomPokeAPI();
@@ -39,15 +93,14 @@ function numberPokeAPI() {
   const numberValue = Number(document.querySelector('#number-input').value);
   const errorContainer = document.querySelector('#error-container');
 
-  if (!isNaN(numberValue) && numberValue > 0 && numberValue <= 151) {
+  if (!isNaN(numberValue) && numberValue > 0 && numberValue <= 807) {
 
     apiCall(numberValue);
 
   } else if (numberValue <= 0) {
-    errorContainer.innerHTML = '<div>Please select number above 0</div>';
-
-  } else if (numberValue > 151) {
-    errorContainer.innerHTML = '<div>Please select number under 152 - Gen 1 only</div>';
+    errorContainer.innerHTML = '<div>Please select valid number</div>';
+  } else if (numberValue > 807) {
+    errorContainer.innerHTML = '<div>Only first 807 available</div>';
   }
 
   setTimeout(() => {
@@ -60,33 +113,52 @@ document.querySelector('#choose-name').addEventListener('click', namePokeAPI);
 function namePokeAPI() {
 
   const nameValue = (document.querySelector('#name-input').value).toLowerCase();
+  // const nameErrorContainer = document.querySelector('#name-error-container');
 
   if (nameValue && isNaN(nameValue)) {
 
     apiCall(nameValue);
+
+  } else if (!nameValue) {
+    nameErrorContainer.innerHTML = '<div>Please enter valid name in input field</div>';
+  } else if (!isNaN(nameValue)) {
+    nameErrorContainer.innerHTML = '<div>Please enter alpha characters in input field</div>';
   }
 
+  setTimeout(() => {
+    nameErrorContainer.innerHTML = '';
+  }, 3000);
 }
 
 
 
 // API call based on number
 async function apiCall(pokemonNum) {
-  clearCard();
 
   const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${pokemonNum}/`;
 
   const response = await fetch(pokeAPI);
-  const pokeData = await response.json();
 
-  const { name, id, types, abilities } = pokeData;
+  if (response.status === 200) {
+    clearCard();
+    const pokeData = await response.json();
+    const { name, id, types, abilities } = pokeData;
 
-  insertSprite(id);
-  insertName(name);
-  insertID(id);
-  insertTypes(types);
-  insertAbilities(abilities);
-  changeBG(types);
+    insertSprite(id);
+    insertName(name);
+    insertID(id);
+    insertGen(id);
+    insertTypes(types);
+    insertAbilities(abilities);
+    changeBG(types);
+
+  } else {
+    // const nameErrorContainer = document.querySelector('#name-error-container');
+    nameErrorContainer.innerHTML = '<div>Pokemon not found</div>';
+    setTimeout(() => {
+      nameErrorContainer.innerHTML = '';
+    }, 3000);
+  }
 }
 
 
@@ -106,6 +178,36 @@ function insertID(id) {
   const idRow = document.querySelector('.ID-row');
   const pokemonID = `<p id='insert-ID'>${id}</p>`;
   idRow.insertAdjacentHTML('beforeend', pokemonID);
+
+}
+
+
+// Insert Gen in DOM
+function insertGen(id) {
+
+  const genRow = document.querySelector('.gen-row');
+  let generationLabel;
+
+  id = Number(id);
+
+  if (id >= 1 && id <= 151) {
+    generationLabel = 'I';
+  } else if (id >= 152 && id <= 251) {
+    generationLabel = 'II';
+  } else if (id >= 252 && id <= 386) {
+    generationLabel = 'III';
+  } else if (id >= 387 && id <= 493) {
+    generationLabel = 'IV';
+  } else if (id >= 494 && id <= 649) {
+    generationLabel = 'V';
+  } else if (id >= 650 && id <= 721) {
+    generationLabel = 'VI';
+  } else if (id >= 722 && id <= 807) {
+    generationLabel = 'VII';
+  }
+
+  const pokemonGen = `<p id='insert-gen'>${generationLabel}</p>`;
+  genRow.insertAdjacentHTML('beforeend', pokemonGen);
 
 }
 
@@ -171,6 +273,7 @@ function clearCard() {
   document.querySelector('.sprite').innerHTML = '';
   document.querySelector('.name-row').lastChild.innerHTML = '';
   document.querySelector('.ID-row').lastChild.innerHTML = '';
+  document.querySelector('.gen-row').lastChild.innerHTML = '';
   document.querySelector('.type-list').innerHTML = '';
   document.querySelector('.abilities-list').innerHTML = '';
 

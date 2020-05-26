@@ -124,7 +124,8 @@ input {
 
 
 /* Error container div */
-#error-container div {
+#error-container div,
+#name-error-container div {
   color: #fff;
   background: #E3350D;
   padding: 0.2rem;
@@ -133,6 +134,23 @@ input {
   font-size: 0.8rem;
 }
 
+/* Generations select */
+.generation-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
 
+.generation-select select {
+  width: 150px;
+  height: 1.6rem;
+  font-size: 0.9rem;
+}
+
+.generation-select select:focus {
+  outline: none;
+  border: 1px solid #E3350D; 
+}
 
 
