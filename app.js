@@ -130,6 +130,20 @@ function namePokeAPI() {
   }, 3000);
 }
 
+// Left/Right arrow scroll buttons
+document.querySelector('.scroll-select').addEventListener('click', scrollPoke);
+function scrollPoke(e) {
+
+  const currentNumber = parseInt(document.querySelector('.ID-row').lastChild.textContent);
+
+  if (e.target.id === 'left') {
+    apiCall(currentNumber - 1);
+  } else if (e.target.id === 'right') {
+    apiCall(currentNumber + 1);
+  }
+
+  e.preventDefault();
+}
 
 
 // API call based on number
@@ -162,6 +176,9 @@ async function apiCall(pokemonNum) {
 }
 
 
+// **************************************************************************
+// INSERT MAIN CARD DOM SECTION
+// **************************************************************************
 
 // Insert name in DOM
 function insertName(name) {
@@ -271,13 +288,98 @@ function changeBG(typeArray) {
 function clearCard() {
 
   document.querySelector('.sprite').innerHTML = '';
-  document.querySelector('.name-row').lastChild.innerHTML = '';
-  document.querySelector('.ID-row').lastChild.innerHTML = '';
-  document.querySelector('.gen-row').lastChild.innerHTML = '';
+  document.querySelector('.name-row').lastChild.remove();
+  document.querySelector('.ID-row').lastChild.remove();
+  document.querySelector('.gen-row').lastChild.remove();
   document.querySelector('.type-list').innerHTML = '';
   document.querySelector('.abilities-list').innerHTML = '';
 
 }
 
 
+// **************************************************************************
+// ADD CARDS TO BOOK SECTION
+// **************************************************************************
 
+// Data array that will eventually be saved to local storage
+let miniBookData = [];
+
+// Add pokemon button event listener
+document.querySelector('#add-pokemon').addEventListener('click', addPokemonToBook);
+function addPokemonToBook() {
+
+  // Current pokemon info
+  const currentName = document.querySelector('.name-row').lastChild.textContent;
+  const currentID = document.querySelector('.ID-row').lastChild.textContent;
+  const currentGen = document.querySelector('.gen-row').lastChild.textContent;
+  const currentTypeList = document.querySelector('.type-list').childNodes;
+  let typeListItems = [];
+  for (let item of currentTypeList) { typeListItems.push(item.textContent) };
+
+  const miniCardData = {
+    name: currentName,
+    id: currentID,
+    gen: currentGen,
+    typeList: typeListItems
+  }
+
+  miniBookData.push(miniCardData);
+
+  console.log(miniCardData);
+  console.log(miniBookData);
+
+  // Create mini-card to append into book
+  const cardBook = document.querySelector('.card-book');
+
+  const bgColor = getBG(miniCardData.typeList[0].toLowerCase());
+
+  const miniCardHTML = `
+  <div class="mini-card" style='background:${bgColor}'>
+  <div class="mini-sprite">
+    <img src="https://pokeres.bastionbot.org/images/pokemon/${miniCardData.id}.png" alt="">
+  </div>
+  <div class="mini-info-table">
+    <div class="mini-row mini-name-row">
+      <p>Name</p>
+      <p id='mini-insert-name'>${miniCardData.currentName}</p>
+    </div>
+    <div class="mini-row mini-ID-row">
+      <p>Number</p>
+      <p id='mini-insert-ID'>${miniCardData.id}</p>
+    </div>
+    <div class="mini-row mini-gen-row">
+      <p>Generation</p>
+      <p id='mini-insert-gen'>${miniCardData.gen}</p>
+    </div>
+    <div class="mini-row mini-type-row">
+      <p>Type</p>
+      <ul class='mini-type-list-${miniBookData.length}'>
+  
+      </ul>
+    </div>
+  </div>
+  </div>`;
+
+
+  cardBook.insertAdjacentHTML('beforeend', miniCardHTML);
+
+  const ulTypeList = document.querySelector(`.mini-type-list-${miniBookData.length}`);
+
+  // create li's for types
+  for (let typeListItem of miniCardData.typeList) {
+    let newLi = document.createElement('li');
+    newLi.textContent = typeListItem;
+    ulTypeList.appendChild(newLi);
+  }
+
+}
+
+
+// Get bg color for card
+function getBG(pokeType) {
+  for (let array of typeBG) {
+    if (array.type === pokeType) {
+      return array.bg;
+    }
+  }
+}
