@@ -145,6 +145,21 @@ function scrollPoke(e) {
   e.preventDefault();
 }
 
+// // Left/Right key press to scroll pokemon
+// document.addEventListener('keydown', keyScrollPoke);
+// function keyScrollPoke(e) {
+
+//   const currentNumber = parseInt(document.querySelector('.ID-row').lastChild.textContent);
+
+//   if (e.keyCode === 37) {
+//     apiCall(currentNumber - 1);
+//   } else if (e.keyCode === 39) {
+//     apiCall(currentNumber + 1);
+//   }
+
+//   e.preventDefault();
+// }
+
 
 // API call based on number
 async function apiCall(pokemonNum) {
@@ -298,7 +313,7 @@ function clearCard() {
 
 
 // **************************************************************************
-// ADD CARDS TO BOOK SECTION
+// ADD/DELETE CARDS TO BOOK SECTION
 // **************************************************************************
 
 // Data array that will eventually be saved to local storage
@@ -325,55 +340,15 @@ function addPokemonToBook() {
 
   miniBookData.push(miniCardData);
 
-  console.log(miniCardData);
   console.log(miniBookData);
+
 
   // Create mini-card to append into book
   const cardBook = document.querySelector('.card-book');
 
-  const bgColor = getBG(miniCardData.typeList[0].toLowerCase());
-
-  const miniCardHTML = `
-  <div class="mini-card" style='background:${bgColor}'>
-  <div class="mini-sprite">
-    <img src="https://pokeres.bastionbot.org/images/pokemon/${miniCardData.id}.png" alt="">
-  </div>
-  <div class="mini-info-table">
-    <div class="mini-row mini-name-row">
-      <p>Name</p>
-      <p id='mini-insert-name'>${miniCardData.currentName}</p>
-    </div>
-    <div class="mini-row mini-ID-row">
-      <p>Number</p>
-      <p id='mini-insert-ID'>${miniCardData.id}</p>
-    </div>
-    <div class="mini-row mini-gen-row">
-      <p>Generation</p>
-      <p id='mini-insert-gen'>${miniCardData.gen}</p>
-    </div>
-    <div class="mini-row mini-type-row">
-      <p>Type</p>
-      <ul class='mini-type-list-${miniBookData.length}'>
-  
-      </ul>
-    </div>
-  </div>
-  </div>`;
-
-
-  cardBook.insertAdjacentHTML('beforeend', miniCardHTML);
-
-  const ulTypeList = document.querySelector(`.mini-type-list-${miniBookData.length}`);
-
-  // create li's for types
-  for (let typeListItem of miniCardData.typeList) {
-    let newLi = document.createElement('li');
-    newLi.textContent = typeListItem;
-    ulTypeList.appendChild(newLi);
-  }
+  addCardsToBook(miniCardData, miniBookData.length, cardBook);
 
 }
-
 
 // Get bg color for card
 function getBG(pokeType) {
@@ -381,5 +356,199 @@ function getBG(pokeType) {
     if (array.type === pokeType) {
       return array.bg;
     }
+  }
+}
+
+
+// Delete pokemon event listener (need to use event delegation)
+document.querySelector('.card-book').addEventListener('click', deletePokemonFromBook);
+function deletePokemonFromBook(e) {
+
+  if (e.target.parentElement.className === 'delete-mini-card') {
+    e.target.parentElement.parentElement.remove();
+  }
+
+  const cardName = e.target.parentElement.parentElement.children[2].children[0].children[1].textContent;
+
+  for (let i = 0; i < miniBookData.length; i++) {
+    if (miniBookData[i].name === cardName) {
+      miniBookData.splice(miniBookData.indexOf(miniBookData[i]), 1);
+    }
+  }
+
+  e.preventDefault();
+}
+
+
+
+// **************************************************************************
+// SORTING BUTTONS
+// **************************************************************************
+
+
+// Sort by number
+document.querySelector('#sort-id').addEventListener('click', sortByNumber);
+function sortByNumber() {
+
+  if (miniBookData) {
+
+    function compare(a, b) {
+
+      const idOne = Number(a.id);
+      const idTwo = Number(b.id);
+
+      let comparison = 0;
+      if (idOne > idTwo) {
+        comparison = 1;
+      } else if (idOne < idTwo) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+
+    miniBookData.sort(compare);
+
+  }
+
+  // Display newly sorted cards
+  displayNewlySorted();
+}
+
+// Sort by Name
+document.querySelector('#sort-name').addEventListener('click', sortByName);
+function sortByName() {
+
+  if (miniBookData) {
+    function compare(a, b) {
+
+      const nameOne = a.name;
+      const nameTwo = b.name;
+
+      let comparison = 0;
+      if (nameOne > nameTwo) {
+        comparison = 1;
+      } else if (nameOne < nameTwo) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+    miniBookData.sort(compare);
+  }
+
+  // Display newly sorted cards
+  displayNewlySorted();
+
+}
+
+// Sort by Type
+document.querySelector('#sort-type').addEventListener('click', sortByType);
+function sortByType() {
+
+  if (miniBookData) {
+    function compare(a, b) {
+
+      const nameOne = a.typeList[0];
+      const nameTwo = b.typeList[0];
+
+      let comparison = 0;
+      if (nameOne > nameTwo) {
+        comparison = 1;
+      } else if (nameOne < nameTwo) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+    miniBookData.sort(compare);
+  }
+
+  // Display newly sorted cards
+  displayNewlySorted();
+
+}
+
+
+// Sort by Generation
+document.querySelector('#sort-gen').addEventListener('click', sortByGen);
+function sortByGen() {
+
+  if (miniBookData) {
+    function compare(a, b) {
+
+      const nameOne = a.gen;
+      const nameTwo = b.gen;
+
+      let comparison = 0;
+      if (nameOne > nameTwo) {
+        comparison = 1;
+      } else if (nameOne < nameTwo) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+    miniBookData.sort(compare);
+  }
+
+  // Display newly sorted cards
+  displayNewlySorted();
+
+}
+
+
+// display newly sorted cards function
+function displayNewlySorted() {
+  const cardBook = document.querySelector('.card-book');
+  cardBook.innerHTML = '';
+
+  for (let pokemon of miniBookData) {
+
+    // Create mini-card to append into book
+    addCardsToBook(pokemon, miniBookData.indexOf(pokemon) + 1, cardBook);
+
+  }
+}
+
+// General add cards to book
+function addCardsToBook(cardDataArray, typeListNumber, cardBook) {
+
+
+  const bgColor = getBG(cardDataArray.typeList[0].toLowerCase());
+
+  const miniCardHTML = `
+  <div class="mini-card" style='background:${bgColor}'>
+  <div class="delete-mini-card"><i class="fas fa-times fa-lg"></i></div>
+  <div class="mini-sprite">
+    <img src="https://pokeres.bastionbot.org/images/pokemon/${cardDataArray.id}.png" alt="">
+  </div>
+  <div class="mini-info-table">
+    <div class="mini-row mini-name-row">
+      <p>Name</p>
+      <p id='mini-insert-name'>${cardDataArray.name}</p>
+    </div>
+    <div class="mini-row mini-ID-row">
+      <p>Number</p>
+      <p id='mini-insert-ID'>${cardDataArray.id}</p>
+    </div>
+    <div class="mini-row mini-gen-row">
+      <p>Generation</p>
+      <p id='mini-insert-gen'>${cardDataArray.gen}</p>
+    </div>
+    <div class="mini-row mini-type-row">
+      <p>Type</p>
+      <ul class='mini-type-list-${typeListNumber}'>
+  
+      </ul>
+    </div>
+  </div>
+  </div>`;
+
+  cardBook.insertAdjacentHTML('beforeend', miniCardHTML);
+
+  const ulTypeList = document.querySelector(`.mini-type-list-${typeListNumber}`);
+
+  // create li's for types
+  for (let typeListItem of cardDataArray.typeList) {
+    let newLi = document.createElement('li');
+    newLi.textContent = typeListItem;
+    ulTypeList.appendChild(newLi);
   }
 }
