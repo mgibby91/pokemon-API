@@ -317,7 +317,7 @@ function clearCard() {
 // **************************************************************************
 
 // Data array that will eventually be saved to local storage
-let miniBookData = [];
+let miniBookData = getCardsFromLS();
 
 // Add pokemon button event listener
 document.querySelector('#add-pokemon').addEventListener('click', addPokemonToBook);
@@ -342,6 +342,8 @@ function addPokemonToBook() {
 
   console.log(miniBookData);
 
+  // Add card to local storage
+  addCardToLS(miniCardData);
 
   // Create mini-card to append into book
   const cardBook = document.querySelector('.card-book');
@@ -369,6 +371,8 @@ function deletePokemonFromBook(e) {
   }
 
   const cardName = e.target.parentElement.parentElement.children[2].children[0].children[1].textContent;
+
+  deleteCardFromLS(cardName);
 
   for (let i = 0; i < miniBookData.length; i++) {
     if (miniBookData[i].name === cardName) {
@@ -551,4 +555,70 @@ function addCardsToBook(cardDataArray, typeListNumber, cardBook) {
     newLi.textContent = typeListItem;
     ulTypeList.appendChild(newLi);
   }
+}
+
+
+
+// **************************************************************************
+// LOCAL STORAGE MANAGEMENT
+// **************************************************************************
+
+
+// Add cards to local storage
+function addCardToLS(cardData) {
+  let pokemonCards;
+  if (localStorage.getItem('pokemonCards') === null) {
+    pokemonCards = [];
+  } else {
+    pokemonCards = JSON.parse(localStorage.getItem('pokemonCards'));
+  }
+  pokemonCards.push(cardData);
+  localStorage.setItem('pokemonCards', JSON.stringify(pokemonCards));
+}
+
+
+// Get cards from local storage and display on DOM load
+document.addEventListener('DOMContentLoaded', getCardsFromLS);
+function getCardsFromLS() {
+
+  let pokemonCards;
+  if (localStorage.getItem('pokemonCards') === null) {
+    pokemonCards = [];
+  } else {
+    pokemonCards = JSON.parse(localStorage.getItem('pokemonCards'));
+  }
+
+  const cardBook = document.querySelector('.card-book');
+  cardBook.innerHTML = '';
+
+  for (let card of pokemonCards) {
+
+    addCardsToBook(card, pokemonCards.indexOf(card) + 1, cardBook);
+
+  }
+
+  return pokemonCards;
+
+}
+
+
+// Remove task from local storage
+function deleteCardFromLS(cardNameToDelete) {
+
+  let pokemonCards;
+  if (localStorage.getItem('pokemonCards') === null) {
+    pokemonCards = [];
+  } else {
+    pokemonCards = JSON.parse(localStorage.getItem('pokemonCards'));
+  }
+
+  pokemonCards.forEach((card, index) => {
+    if (card.name === cardNameToDelete) {
+      pokemonCards.splice(index, 1);
+    }
+  });
+
+  localStorage.setItem('pokemonCards', JSON.stringify(pokemonCards));
+
+
 }
