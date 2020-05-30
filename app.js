@@ -313,312 +313,32 @@ function clearCard() {
 
 
 // **************************************************************************
-// ADD/DELETE CARDS TO BOOK SECTION
+// ADD/DELETE CARDS TO BOOK SECTION - see pokemonbook.js
 // **************************************************************************
 
-// Data array that will eventually be saved to local storage
-let miniBookData = getCardsFromLS();
 
-// Add pokemon button event listener
-document.querySelector('#add-pokemon').addEventListener('click', addPokemonToBook);
-function addPokemonToBook() {
+const addButton = document.querySelector('#add-pokemon');
+const deleteButton = document.querySelector('.card-book');
 
-  // Current pokemon info
-  const currentName = document.querySelector('.name-row').lastChild.textContent;
-  const currentID = document.querySelector('.ID-row').lastChild.textContent;
-  const currentGen = document.querySelector('.gen-row').lastChild.textContent;
-  const currentTypeList = document.querySelector('.type-list').childNodes;
-  let typeListItems = [];
-  for (let item of currentTypeList) { typeListItems.push(item.textContent) };
+const pokemonBook = new PokemonBook(addButton, deleteButton);
 
-  const miniCardData = {
-    name: currentName,
-    id: currentID,
-    gen: currentGen,
-    typeList: typeListItems
-  }
+let miniBookData = pokemonBook.getCardsFromLS();
 
-  miniBookData.push(miniCardData);
-
-  console.log(miniBookData);
-
-  // Add card to local storage
-  addCardToLS(miniCardData);
-
-  // Create mini-card to append into book
-  const cardBook = document.querySelector('.card-book');
-
-  addCardsToBook(miniCardData, miniBookData.length, cardBook);
-
-}
-
-// Get bg color for card
-function getBG(pokeType) {
-  for (let array of typeBG) {
-    if (array.type === pokeType) {
-      return array.bg;
-    }
-  }
-}
-
-
-// Delete pokemon event listener (need to use event delegation)
-document.querySelector('.card-book').addEventListener('click', deletePokemonFromBook);
-function deletePokemonFromBook(e) {
-
-  if (e.target.parentElement.className === 'delete-mini-card') {
-    e.target.parentElement.parentElement.remove();
-  }
-
-  const cardName = e.target.parentElement.parentElement.children[2].children[0].children[1].textContent;
-
-  deleteCardFromLS(cardName);
-
-  for (let i = 0; i < miniBookData.length; i++) {
-    if (miniBookData[i].name === cardName) {
-      miniBookData.splice(miniBookData.indexOf(miniBookData[i]), 1);
-    }
-  }
-
-  e.preventDefault();
-}
+document.addEventListener('DOMContentLoaded', pokemonBook.getCardsFromLS);
 
 
 
 // **************************************************************************
-// SORTING BUTTONS
+// SORTING BUTTONS - see sorting.js
 // **************************************************************************
 
 
-// Sort by number
-document.querySelector('#sort-id').addEventListener('click', sortByNumber);
-function sortByNumber() {
+// Sorting buttons
+const sortName = document.querySelector('#sort-name');
+const sortNumber = document.querySelector('#sort-id');
+const sortGen = document.querySelector('#sort-gen');
+const sortType = document.querySelector('#sort-type');
 
-  if (miniBookData) {
-
-    function compare(a, b) {
-
-      const idOne = Number(a.id);
-      const idTwo = Number(b.id);
-
-      let comparison = 0;
-      if (idOne > idTwo) {
-        comparison = 1;
-      } else if (idOne < idTwo) {
-        comparison = -1;
-      }
-      return comparison;
-    }
-
-    miniBookData.sort(compare);
-
-  }
-
-  // Display newly sorted cards
-  displayNewlySorted();
-}
-
-// Sort by Name
-document.querySelector('#sort-name').addEventListener('click', sortByName);
-function sortByName() {
-
-  if (miniBookData) {
-    function compare(a, b) {
-
-      const nameOne = a.name;
-      const nameTwo = b.name;
-
-      let comparison = 0;
-      if (nameOne > nameTwo) {
-        comparison = 1;
-      } else if (nameOne < nameTwo) {
-        comparison = -1;
-      }
-      return comparison;
-    }
-    miniBookData.sort(compare);
-  }
-
-  // Display newly sorted cards
-  displayNewlySorted();
-
-}
-
-// Sort by Type
-document.querySelector('#sort-type').addEventListener('click', sortByType);
-function sortByType() {
-
-  if (miniBookData) {
-    function compare(a, b) {
-
-      const nameOne = a.typeList[0];
-      const nameTwo = b.typeList[0];
-
-      let comparison = 0;
-      if (nameOne > nameTwo) {
-        comparison = 1;
-      } else if (nameOne < nameTwo) {
-        comparison = -1;
-      }
-      return comparison;
-    }
-    miniBookData.sort(compare);
-  }
-
-  // Display newly sorted cards
-  displayNewlySorted();
-
-}
+const sorting = new Sorting(sortName, sortNumber, sortGen, sortType);
 
 
-// Sort by Generation
-document.querySelector('#sort-gen').addEventListener('click', sortByGen);
-function sortByGen() {
-
-  if (miniBookData) {
-    function compare(a, b) {
-
-      const nameOne = a.gen;
-      const nameTwo = b.gen;
-
-      let comparison = 0;
-      if (nameOne > nameTwo) {
-        comparison = 1;
-      } else if (nameOne < nameTwo) {
-        comparison = -1;
-      }
-      return comparison;
-    }
-    miniBookData.sort(compare);
-  }
-
-  // Display newly sorted cards
-  displayNewlySorted();
-
-}
-
-
-// display newly sorted cards function
-function displayNewlySorted() {
-  const cardBook = document.querySelector('.card-book');
-  cardBook.innerHTML = '';
-
-  for (let pokemon of miniBookData) {
-
-    // Create mini-card to append into book
-    addCardsToBook(pokemon, miniBookData.indexOf(pokemon) + 1, cardBook);
-
-  }
-}
-
-// General add cards to book
-function addCardsToBook(cardDataArray, typeListNumber, cardBook) {
-
-
-  const bgColor = getBG(cardDataArray.typeList[0].toLowerCase());
-
-  const miniCardHTML = `
-  <div class="mini-card" style='background:${bgColor}'>
-  <div class="delete-mini-card"><i class="fas fa-times fa-lg"></i></div>
-  <div class="mini-sprite">
-    <img src="https://pokeres.bastionbot.org/images/pokemon/${cardDataArray.id}.png" alt="">
-  </div>
-  <div class="mini-info-table">
-    <div class="mini-row mini-name-row">
-      <p>Name</p>
-      <p id='mini-insert-name'>${cardDataArray.name}</p>
-    </div>
-    <div class="mini-row mini-ID-row">
-      <p>Number</p>
-      <p id='mini-insert-ID'>${cardDataArray.id}</p>
-    </div>
-    <div class="mini-row mini-gen-row">
-      <p>Generation</p>
-      <p id='mini-insert-gen'>${cardDataArray.gen}</p>
-    </div>
-    <div class="mini-row mini-type-row">
-      <p>Type</p>
-      <ul class='mini-type-list-${typeListNumber}'>
-  
-      </ul>
-    </div>
-  </div>
-  </div>`;
-
-  cardBook.insertAdjacentHTML('beforeend', miniCardHTML);
-
-  const ulTypeList = document.querySelector(`.mini-type-list-${typeListNumber}`);
-
-  // create li's for types
-  for (let typeListItem of cardDataArray.typeList) {
-    let newLi = document.createElement('li');
-    newLi.textContent = typeListItem;
-    ulTypeList.appendChild(newLi);
-  }
-}
-
-
-
-// **************************************************************************
-// LOCAL STORAGE MANAGEMENT
-// **************************************************************************
-
-
-// Add cards to local storage
-function addCardToLS(cardData) {
-  let pokemonCards;
-  if (localStorage.getItem('pokemonCards') === null) {
-    pokemonCards = [];
-  } else {
-    pokemonCards = JSON.parse(localStorage.getItem('pokemonCards'));
-  }
-  pokemonCards.push(cardData);
-  localStorage.setItem('pokemonCards', JSON.stringify(pokemonCards));
-}
-
-
-// Get cards from local storage and display on DOM load
-document.addEventListener('DOMContentLoaded', getCardsFromLS);
-function getCardsFromLS() {
-
-  let pokemonCards;
-  if (localStorage.getItem('pokemonCards') === null) {
-    pokemonCards = [];
-  } else {
-    pokemonCards = JSON.parse(localStorage.getItem('pokemonCards'));
-  }
-
-  const cardBook = document.querySelector('.card-book');
-  cardBook.innerHTML = '';
-
-  for (let card of pokemonCards) {
-
-    addCardsToBook(card, pokemonCards.indexOf(card) + 1, cardBook);
-
-  }
-
-  return pokemonCards;
-
-}
-
-
-// Remove task from local storage
-function deleteCardFromLS(cardNameToDelete) {
-
-  let pokemonCards;
-  if (localStorage.getItem('pokemonCards') === null) {
-    pokemonCards = [];
-  } else {
-    pokemonCards = JSON.parse(localStorage.getItem('pokemonCards'));
-  }
-
-  pokemonCards.forEach((card, index) => {
-    if (card.name === cardNameToDelete) {
-      pokemonCards.splice(index, 1);
-    }
-  });
-
-  localStorage.setItem('pokemonCards', JSON.stringify(pokemonCards));
-
-
-}
