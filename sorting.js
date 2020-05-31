@@ -1,4 +1,5 @@
 class Sorting {
+
   constructor(nameButton, numberButton, genButton, typeButton) {
     this.nameButton = nameButton;
     this.numberButton = numberButton;
