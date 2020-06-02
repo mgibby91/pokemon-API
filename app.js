@@ -110,13 +110,15 @@ async function queryData() {
 
   }
 
+  console.log(typesArray);
+
   nameInput.disabled = false;
 
 }
 
 
 
-document.addEventListener('keyup', nameSearch);
+document.addEventListener('input', nameSearch);
 function nameSearch() {
 
   const nameInputValue = document.querySelector('#name-input').value;
@@ -173,11 +175,14 @@ document.querySelector('.search-container').addEventListener('click', addResultT
 function addResultToMain(e) {
 
   if (e.target.className === 'search-result') {
-
-    const pokemonNum = Number(e.target.id);
-    mainCard.apiCall(pokemonNum);
-
+    pokemonNum = Number(e.target.id);
+  } else if (e.target.className === 'search-name' || e.target.tagName === 'IMG') {
+    pokemonNum = Number(e.target.parentElement.id);
+  } else if (e.target.tagName === 'P') {
+    pokemonNum = Number(e.target.parentElement.parentElement.id);
   }
+
+  mainCard.apiCall(pokemonNum);
 
   e.preventDefault();
 }
