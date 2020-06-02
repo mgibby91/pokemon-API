@@ -91,99 +91,12 @@ const sorting = new Sorting(sortName, sortNumber, sortGen, sortType);
 // SEARCH FEATURE AUTOCOMPLETE
 // **************************************************************************
 
-
 let typesArray = [];
 
-document.addEventListener('DOMContentLoaded', queryData);
-async function queryData() {
+const nameSearchInput = document.querySelector('#name-input');
+const searchContainer = document.querySelector('.search-container');
 
-  const nameInput = document.querySelector('#name-input');
-  nameInput.disabled = true;
-
-  for (let i = 1; i <= 807; i++) {
-    const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${i}/`;
-    const response = await fetch(pokeAPI);
-    const pokeData = await response.json();
-    const { types } = pokeData;
-
-    typesArray.push(types);
-
-  }
-
-  console.log(typesArray);
-
-  nameInput.disabled = false;
-
-}
+const search = new Search(nameSearchInput, searchContainer);
 
 
-
-document.addEventListener('input', nameSearch);
-function nameSearch() {
-
-  const nameInputValue = document.querySelector('#name-input').value;
-
-  document.querySelector('.search-container').innerHTML = '';
-
-  if (nameInputValue.length >= 2) {
-
-    pokemonNamesArray.forEach((pokeName, idx) => {
-      if (pokeName.includes(nameInputValue.toLowerCase())) {
-
-        displaySearchResults(pokeName, idx + 1, typesArray[idx]);
-
-      }
-
-    });
-  }
-
-}
-
-function displaySearchResults(name, id, typeArray) {
-
-  const searchContainer = document.querySelector('.search-container');
-  const searchResult = `
-  <div class="search-result" id='${id}'>
-  <img src="https://pokeres.bastionbot.org/images/pokemon/${id}.png" alt="">
-  <div class="search-name">
-  <p>${name[0].toUpperCase() + name.slice(1)}</p>
-  <p>#${id}</p>
-  </div>
-  </div>
-  `;
-
-  searchContainer.insertAdjacentHTML('beforeend', searchResult);
-
-  for (let type of typeArray) {
-    if (type.slot === 1) {
-      const primaryType = type.type.name;
-      for (let pokeType of typeBG) {
-        if (pokeType.type === primaryType) {
-          const allResults = document.querySelectorAll('.search-result');
-          const lastIndex = allResults.length - 1;
-          allResults[lastIndex].style.background = pokeType.bg;
-        }
-      }
-    }
-  }
-
-}
-
-
-// add to main card
-document.querySelector('.search-container').addEventListener('click', addResultToMain);
-function addResultToMain(e) {
-
-  if (e.target.className === 'search-result') {
-    pokemonNum = Number(e.target.id);
-  } else if (e.target.className === 'search-name' || e.target.tagName === 'IMG') {
-    pokemonNum = Number(e.target.parentElement.id);
-  } else if (e.target.tagName === 'P') {
-    pokemonNum = Number(e.target.parentElement.parentElement.id);
-  }
-
-  mainCard.apiCall(pokemonNum);
-
-  e.preventDefault();
-}
 
