@@ -14,101 +14,119 @@
 
 <body>
 
+  <div class="main-container">
 
-  <div class="container">
+    <div class="left-container">
 
-    <div class="generation-select">
-      <select name="generations" id="generations">
-        <option value="All-Generations">All Generations</option>
-        <option value="Generation-I">Generation I</option>
-        <option value="Generation-II">Generation II</option>
-        <option value="Generation-III">Generation III</option>
-        <option value="Generation-IV">Generation IV</option>
-        <option value="Generation-V">Generation V</option>
-        <option value="Generation-VI">Generation VI</option>
-        <option value="Generation-VII">Generation VII</option>
-      </select>
-      <button class='btn' id='random-button'>Randomize!</button>
-    </div>
-
-
-
-    <div id="number-select">
-      <div class='ID-input'>
-        <label for="choose-ID">Select by Number</label>
-        <input type="number" id='number-input'>
-      </div>
-      <div class="ID-button">
-        <button class='btn' id='choose-ID'>Select Pokemon</button>
-      </div>
-    </div>
-
-    <div id="error-container">
-      <!-- <div>Error message!</div> -->
-    </div>
-
-    <div id="name-select">
-      <div class='name-input'>
-        <label for="choose-name">Select by Name</label>
-        <input type="text" id='name-input'>
-      </div>
-      <div class="name-button">
-        <button class='btn' id='choose-name'>Select Pokemon</button>
-      </div>
-    </div>
-
-    <div id="name-error-container">
-      <!-- <div>Error message!</div> -->
-    </div>
-
-    <div class="scroll-select">
-      <i id='left' class="fas fa-arrow-alt-circle-left fa-2x"></i>
-      <p>Scroll through Pokemon</p>
-      <i id='right' class="fas fa-arrow-alt-circle-right fa-2x"></i>
-    </div>
-
-
-    <div class="card">
-
-      <div class="sprite">
-        <!-- <img src="https://pokeres.bastionbot.org/images/pokemon/1.png" alt=""> -->
-      </div>
-
-      <div class="info-table">
-        <div class="row name-row">
-          <p>Name</p>
-          <!-- <p id='insert-name'>Bulbasaur</p> -->
+      <div id="number-select">
+        <div class='ID-input'>
+          <label for="choose-ID">Select by Number</label>
+          <input type="number" id='number-input'>
         </div>
-        <div class="row ID-row">
-          <p>Number</p>
-          <!-- <p id='insert-ID'>1</p> -->
+        <div class="ID-button">
+          <button class='btn' id='choose-ID'>Select Pokemon</button>
         </div>
-        <div class="row gen-row">
-          <p>Generation</p>
-          <!-- <p id='insert-gen'>I</p> -->
+      </div>
+
+      <div id="error-container">
+        <!-- <div>Error message!</div> -->
+      </div>
+
+      <div id="name-select">
+        <div class='name-input'>
+          <label for="choose-name">Select by Name</label>
+          <input type="text" id='name-input'>
         </div>
-        <div class="row type-row">
-          <p>Type</p>
-          <ul class='type-list'>
-            <!-- <li>Poison</li>
+        <div class="name-button">
+          <button class='btn' id='choose-name'>Select Pokemon</button>
+        </div>
+      </div>
+
+      <div id="name-error-container">
+        <!-- <div>Error message!</div> -->
+      </div>
+
+      <!-- search results -->
+      <div class="search-container">
+        <!-- <div class="search-result">
+          <img src="https://pokeres.bastionbot.org/images/pokemon/1.png" alt="">
+          <div class="search-name">
+            <p>Bulbasaur</p>
+            <p>#1</p>
+          </div>
+        </div> -->
+
+      </div>
+
+    </div>
+
+
+    <div class="right-container">
+
+      <div class="generation-select">
+        <select name="generations" id="generations">
+          <option value="All-Generations">All Generations</option>
+          <option value="Generation-I">Generation I</option>
+          <option value="Generation-II">Generation II</option>
+          <option value="Generation-III">Generation III</option>
+          <option value="Generation-IV">Generation IV</option>
+          <option value="Generation-V">Generation V</option>
+          <option value="Generation-VI">Generation VI</option>
+          <option value="Generation-VII">Generation VII</option>
+        </select>
+        <button class='btn' id='random-button'>Randomize!</button>
+      </div>
+
+      <div class="scroll-select">
+        <i id='left' class="fas fa-arrow-alt-circle-left fa-2x"></i>
+        <p>Scroll through Pokemon</p>
+        <i id='right' class="fas fa-arrow-alt-circle-right fa-2x"></i>
+      </div>
+
+
+      <div class="card">
+
+        <div class="sprite">
+          <!-- <img src="https://pokeres.bastionbot.org/images/pokemon/1.png" alt=""> -->
+        </div>
+
+        <div class="info-table">
+          <div class="row name-row">
+            <p>Name</p>
+            <!-- <p id='insert-name'>Bulbasaur</p> -->
+          </div>
+          <div class="row ID-row">
+            <p>Number</p>
+            <!-- <p id='insert-ID'>1</p> -->
+          </div>
+          <div class="row gen-row">
+            <p>Generation</p>
+            <!-- <p id='insert-gen'>I</p> -->
+          </div>
+          <div class="row type-row">
+            <p>Type</p>
+            <ul class='type-list'>
+              <!-- <li>Poison</li>
             <li>Poison</li> -->
-          </ul>
-        </div>
-        <div class="row abilities-row">
-          <p>Abilities</p>
-          <ul class='abilities-list'>
-            <!-- <li>Moxie</li>
+            </ul>
+          </div>
+          <div class="row abilities-row">
+            <p>Abilities</p>
+            <ul class='abilities-list'>
+              <!-- <li>Moxie</li>
             <li>Intimidate</li> -->
-          </ul>
+            </ul>
+          </div>
         </div>
+
       </div>
 
-    </div>
+      <div class="add-button">
+        <button class='btn' id='add-pokemon'>Add Pokemon</button>
+      </div>
 
-    <div class="add-button">
-      <button class='btn' id='add-pokemon'>Add Pokemon</button>
-    </div>
 
+    </div>
 
   </div>
 
@@ -155,6 +173,7 @@
 
   </div>
 
+  <script src="names.js"></script>
   <script src="maincard.js"></script>
   <script src='pokemonbook.js'></script>
   <script src="sorting.js"></script>

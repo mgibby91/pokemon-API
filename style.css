@@ -10,16 +10,66 @@ html, body {
   line-height: 1.6rem;
 }
 
-.container {
+.main-container {
+  display: flex;
+  justify-content: space-evenly;
   margin: 15px auto;
   max-width: 1100px;
+}
+
+.left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.left-container .search-container {
+  height: 500px;
+  width: 100%;
+  background: #fff;
+  margin: 1rem 0;
+  border-radius: 4px;
+  overflow: auto;
+}
+
+.left-container .search-container .search-result {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+  align-items: center;
+  border-radius: 3px;
+}
+
+.left-container .search-container .search-result:hover {
+  cursor: pointer;
+}
+
+.left-container .search-container .search-result img {
+  width: 40px;
+  margin: 0.5rem 1rem;
+}
+
+
+.left-container .search-container .search-result .search-name {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+
+
+.right-container {
+  max-width: 550px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.container .card {
+.right-container .card {
   background: #fff;
   border-radius: 5px;
   box-shadow: 0 20px 25px 5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -31,16 +81,16 @@ html, body {
   margin-top: 0.5rem;
 }
 
-.container .card .sprite {
+.right-container .card .sprite {
   padding: 1rem;
 }
 
-.container .card .sprite img {
+.right-container .card .sprite img {
   width: 200px;
   height: 200px;
 }
 
-.container .card .row {
+.right-container .card .row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -52,7 +102,7 @@ html, body {
   box-shadow: 0 20px 25px -10px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-.container .card .row p:first-child {
+.right-container .card .row p:first-child {
   font-weight: 700;
 }
 
