@@ -88,7 +88,7 @@ const sorting = new Sorting(sortName, sortNumber, sortGen, sortType);
 
 
 // **************************************************************************
-// SEARCH FEATURE AUTOCOMPLETE
+// SEARCH FEATURE AUTOCOMPLETE - see search.js
 // **************************************************************************
 
 let typesArray = [];
@@ -99,4 +99,95 @@ const searchContainer = document.querySelector('.search-container');
 const search = new Search(nameSearchInput, searchContainer);
 
 
+
+
+// **************************************************************************
+// COMPARISON FEATURE
+// **************************************************************************
+
+
+const addBattle1 = document.querySelector('#add-battle-1');
+const addBattle2 = document.querySelector('#add-battle-2');
+
+addBattle1.addEventListener('click', addToComparison);
+addBattle2.addEventListener('click', addToComparison);
+async function addToComparison(e) {
+
+  const currentName = document.querySelector('.name-row').lastChild.textContent;
+  const currentNum = Number(document.querySelector('.ID-row').lastChild.textContent);
+  const currentColor = document.querySelector('.name-row').style.background;
+
+  const compareNum = e.target.value;
+
+  addCharacteristsToCompare(currentName, currentNum, currentColor, compareNum);
+
+  const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${currentNum}/`;
+  const response = await fetch(pokeAPI);
+  const pokeData = await response.json();
+  const { stats } = pokeData;
+
+  addStatsToCompare1(stats, compareNum);
+
+}
+
+
+function addCharacteristsToCompare(name, num, color, id) {
+
+  const pokemon = document.querySelector(`#pokemon-${id}`);
+  const pokemonName = document.querySelector(`#pokemon-${id} p`);
+  const pokemonImg = document.querySelector(`#pokemon-${id} img`);
+
+  pokemon.style.border = `${color} 10px solid`;
+  pokemonName.textContent = name;
+  pokemonImg.setAttribute('src', `https://pokeres.bastionbot.org/images/pokemon/${num}.png`);
+
+}
+
+
+function addStatsToCompare1(stats, id) {
+
+  let hp, attack, defense, specialAttack, specialDefense, speed;
+
+  for (let stat of stats) {
+    if (stat.stat.name === 'hp') {
+      hp = stat.base_stat;
+    } else if (stat.stat.name === 'attack') {
+      attack = stat.base_stat;
+    } else if (stat.stat.name === 'defense') {
+      defense = stat.base_stat;
+    } else if (stat.stat.name === 'special-attack') {
+      specialAttack = stat.base_stat;
+    } else if (stat.stat.name === 'special-defense') {
+      specialDefense = stat.base_stat;
+    } else if (stat.stat.name === 'speed') {
+      speed = stat.base_stat;
+    }
+  }
+
+  const hpEl = document.querySelector(`#pokemon-${id} #hp-stat`);
+  const attackEl = document.querySelector(`#pokemon-${id} #attack-stat`);
+  const defenseEl = document.querySelector(`#pokemon-${id} #defense-stat`);
+  const specialAttackEl = document.querySelector(`#pokemon-${id} #special-attack-stat`);
+  const specialDefenseEl = document.querySelector(`#pokemon-${id} #special-defense-stat`);
+  const speedEl = document.querySelector(`#pokemon-${id} #speed-stat`);
+
+  hp < 100 ? hpEl.style.width = `${hp}%` : hpEl.style.width = '100%';
+  hpEl.textContent = hp;
+
+  attack < 100 ? attackEl.style.width = `${attack}%` : attackEl.style.width = '100%';
+  attackEl.textContent = attack;
+
+  defense < 100 ? defenseEl.style.width = `${defense}%` : defenseEl.style.width = '100%';
+  defenseEl.textContent = defense;
+
+  specialAttack < 100 ? specialAttackEl.style.width = `${specialAttack}%` : specialAttackEl.style.width = '100%';
+  specialAttackEl.textContent = specialAttack;
+
+  specialDefense < 100 ? specialDefenseEl.style.width = `${specialDefense}%` : specialDefenseEl.style.width = '100%';
+  specialDefenseEl.textContent = specialDefense;
+
+  speed < 100 ? speedEl.style.width = `${speed}%` : speedEl.style.width = '100%';
+  speedEl.textContent = speed;
+
+}
 
