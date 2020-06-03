@@ -128,6 +128,8 @@ async function addToComparison(e) {
 
   addStatsToCompare1(stats, compareNum);
 
+  comparisonColors();
+
 }
 
 
@@ -188,6 +190,53 @@ function addStatsToCompare1(stats, id) {
 
   speed < 100 ? speedEl.style.width = `${speed}%` : speedEl.style.width = '100%';
   speedEl.textContent = speed;
+
+}
+
+
+
+function comparisonColors() {
+
+  const hp1 = document.querySelector(`#pokemon-1 #hp-stat`);
+  const attack1 = document.querySelector(`#pokemon-1 #attack-stat`);
+  const defense1 = document.querySelector(`#pokemon-1 #defense-stat`);
+  const specialAttack1 = document.querySelector(`#pokemon-1 #special-attack-stat`);
+  const specialDefense1 = document.querySelector(`#pokemon-1 #special-defense-stat`);
+  const speed1 = document.querySelector(`#pokemon-1 #speed-stat`);
+
+  const pokemon1Array = [hp1, attack1, defense1, specialAttack1, specialDefense1, speed1];
+
+  const hp2 = document.querySelector(`#pokemon-2 #hp-stat`);
+  const attack2 = document.querySelector(`#pokemon-2 #attack-stat`);
+  const defense2 = document.querySelector(`#pokemon-2 #defense-stat`);
+  const specialAttack2 = document.querySelector(`#pokemon-2 #special-attack-stat`);
+  const specialDefense2 = document.querySelector(`#pokemon-2 #special-defense-stat`);
+  const speed2 = document.querySelector(`#pokemon-2 #speed-stat`);
+
+  const pokemon2Array = [hp2, attack2, defense2, specialAttack2, specialDefense2, speed2];
+
+
+  const bgColors = {
+    higher: 'rgb(0, 168, 0)',
+    lower: 'rgb(227,53,13)',
+    equal: 'rgb(0, 140, 255)'
+  }
+
+  for (let i = 0; i < pokemon1Array.length; i++) {
+    let iter1 = pokemon1Array[i];
+    let iter2 = pokemon2Array[i];
+    if (Number(iter1.textContent) > Number(iter2.textContent)) {
+      iter1.style.background = bgColors.higher;
+      iter2.style.background = bgColors.lower;
+    } else if (Number(iter1.textContent) === Number(iter2.textContent)) {
+      iter1.style.background = bgColors.equal;
+      iter2.style.background = bgColors.equal;
+    } else {
+      iter1.style.background = bgColors.lower;
+      iter2.style.background = bgColors.higher;
+    }
+  }
+
 
 }
 

@@ -390,7 +390,9 @@ input {
 .compare-container .compare-pokemon .stats-container .stat .specific-stat {
   height: 100%;
   width: 0%;
-  background: rgb(0, 140, 255);
+  /* background: rgb(0, 140, 255); */
+  background: rgb(0, 168, 0);
+  /* background: rgb(227,53,13); */
   border-radius: 5px;
   text-align: center;
   font-size: 0.9rem;
