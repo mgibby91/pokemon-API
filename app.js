@@ -102,141 +102,17 @@ const search = new Search(nameSearchInput, searchContainer);
 
 
 // **************************************************************************
-// COMPARISON FEATURE
+// COMPARISON FEATURE - see comparison.js
 // **************************************************************************
 
 
-const addBattle1 = document.querySelector('#add-battle-1');
-const addBattle2 = document.querySelector('#add-battle-2');
+const comparison1Button = document.querySelector('#add-battle-1');
+const comparison2Button = document.querySelector('#add-battle-2');
 
-addBattle1.addEventListener('click', addToComparison);
-addBattle2.addEventListener('click', addToComparison);
-async function addToComparison(e) {
+const comparison = new Comparison(comparison1Button, comparison2Button);
 
-  const currentName = document.querySelector('.name-row').lastChild.textContent;
-  const currentNum = Number(document.querySelector('.ID-row').lastChild.textContent);
-  const currentColor = document.querySelector('.name-row').style.background;
-
-  const compareNum = e.target.value;
-
-  addCharacteristsToCompare(currentName, currentNum, currentColor, compareNum);
-
-  const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${currentNum}/`;
-  const response = await fetch(pokeAPI);
-  const pokeData = await response.json();
-  const { stats } = pokeData;
-
-  addStatsToCompare1(stats, compareNum);
-
-  comparisonColors();
-
-}
+comparison.onLoadAddToComparison(1);
+comparison.onLoadAddToComparison(2);
 
 
-function addCharacteristsToCompare(name, num, color, id) {
-
-  const pokemon = document.querySelector(`#pokemon-${id}`);
-  const pokemonName = document.querySelector(`#pokemon-${id} p`);
-  const pokemonImg = document.querySelector(`#pokemon-${id} img`);
-
-  pokemon.style.border = `${color} 10px solid`;
-  pokemonName.textContent = name;
-  pokemonImg.setAttribute('src', `https://pokeres.bastionbot.org/images/pokemon/${num}.png`);
-
-}
-
-
-function addStatsToCompare1(stats, id) {
-
-  let hp, attack, defense, specialAttack, specialDefense, speed;
-
-  for (let stat of stats) {
-    if (stat.stat.name === 'hp') {
-      hp = stat.base_stat;
-    } else if (stat.stat.name === 'attack') {
-      attack = stat.base_stat;
-    } else if (stat.stat.name === 'defense') {
-      defense = stat.base_stat;
-    } else if (stat.stat.name === 'special-attack') {
-      specialAttack = stat.base_stat;
-    } else if (stat.stat.name === 'special-defense') {
-      specialDefense = stat.base_stat;
-    } else if (stat.stat.name === 'speed') {
-      speed = stat.base_stat;
-    }
-  }
-
-  const hpEl = document.querySelector(`#pokemon-${id} #hp-stat`);
-  const attackEl = document.querySelector(`#pokemon-${id} #attack-stat`);
-  const defenseEl = document.querySelector(`#pokemon-${id} #defense-stat`);
-  const specialAttackEl = document.querySelector(`#pokemon-${id} #special-attack-stat`);
-  const specialDefenseEl = document.querySelector(`#pokemon-${id} #special-defense-stat`);
-  const speedEl = document.querySelector(`#pokemon-${id} #speed-stat`);
-
-  hp < 100 ? hpEl.style.width = `${hp}%` : hpEl.style.width = '100%';
-  hpEl.textContent = hp;
-
-  attack < 100 ? attackEl.style.width = `${attack}%` : attackEl.style.width = '100%';
-  attackEl.textContent = attack;
-
-  defense < 100 ? defenseEl.style.width = `${defense}%` : defenseEl.style.width = '100%';
-  defenseEl.textContent = defense;
-
-  specialAttack < 100 ? specialAttackEl.style.width = `${specialAttack}%` : specialAttackEl.style.width = '100%';
-  specialAttackEl.textContent = specialAttack;
-
-  specialDefense < 100 ? specialDefenseEl.style.width = `${specialDefense}%` : specialDefenseEl.style.width = '100%';
-  specialDefenseEl.textContent = specialDefense;
-
-  speed < 100 ? speedEl.style.width = `${speed}%` : speedEl.style.width = '100%';
-  speedEl.textContent = speed;
-
-}
-
-
-
-function comparisonColors() {
-
-  const hp1 = document.querySelector(`#pokemon-1 #hp-stat`);
-  const attack1 = document.querySelector(`#pokemon-1 #attack-stat`);
-  const defense1 = document.querySelector(`#pokemon-1 #defense-stat`);
-  const specialAttack1 = document.querySelector(`#pokemon-1 #special-attack-stat`);
-  const specialDefense1 = document.querySelector(`#pokemon-1 #special-defense-stat`);
-  const speed1 = document.querySelector(`#pokemon-1 #speed-stat`);
-
-  const pokemon1Array = [hp1, attack1, defense1, specialAttack1, specialDefense1, speed1];
-
-  const hp2 = document.querySelector(`#pokemon-2 #hp-stat`);
-  const attack2 = document.querySelector(`#pokemon-2 #attack-stat`);
-  const defense2 = document.querySelector(`#pokemon-2 #defense-stat`);
-  const specialAttack2 = document.querySelector(`#pokemon-2 #special-attack-stat`);
-  const specialDefense2 = document.querySelector(`#pokemon-2 #special-defense-stat`);
-  const speed2 = document.querySelector(`#pokemon-2 #speed-stat`);
-
-  const pokemon2Array = [hp2, attack2, defense2, specialAttack2, specialDefense2, speed2];
-
-
-  const bgColors = {
-    higher: 'rgb(0, 168, 0)',
-    lower: 'rgb(227,53,13)',
-    equal: 'rgb(0, 140, 255)'
-  }
-
-  for (let i = 0; i < pokemon1Array.length; i++) {
-    let iter1 = pokemon1Array[i];
-    let iter2 = pokemon2Array[i];
-    if (Number(iter1.textContent) > Number(iter2.textContent)) {
-      iter1.style.background = bgColors.higher;
-      iter2.style.background = bgColors.lower;
-    } else if (Number(iter1.textContent) === Number(iter2.textContent)) {
-      iter1.style.background = bgColors.equal;
-      iter2.style.background = bgColors.equal;
-    } else {
-      iter1.style.background = bgColors.lower;
-      iter2.style.background = bgColors.higher;
-    }
-  }
-
-
-}
 
