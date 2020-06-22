@@ -61,7 +61,7 @@ class PokemonBook {
   addCardsToBook = (cardDataArray, typeListNumber, cardBook) => {
 
 
-    const bgColor = this.getBG(cardDataArray.typeList[0].toLowerCase());
+    const bgColor = this.getBG(cardDataArray.typeList[cardDataArray.typeList.length - 1].toLowerCase());
 
     const miniCardHTML = `
     <div class="mini-card" style='background:${bgColor}'>
