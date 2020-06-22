@@ -91,7 +91,7 @@ const sorting = new Sorting(sortName, sortNumber, sortGen, sortType);
 // SEARCH FEATURE AUTOCOMPLETE - see search.js
 // **************************************************************************
 
-let typesArray = [];
+// let typesArray = [];
 
 const nameSearchInput = document.querySelector('#name-input');
 const searchContainer = document.querySelector('.search-container');

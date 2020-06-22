@@ -14,7 +14,11 @@
 
 <body>
 
+  <div class="heading-container">
+    <h2 class='heading'>FIND POKEMON</h2>
+  </div>
   <div class="main-container">
+
 
     <div class="left-container">
 
@@ -47,6 +51,7 @@
       </div>
 
       <!-- search results -->
+      <div id='search-title'>Search Results</div>
       <div class="search-container">
         <!-- <div class="search-result">
           <img src="https://pokeres.bastionbot.org/images/pokemon/1.png" alt="">
@@ -122,14 +127,20 @@
       </div>
 
       <div class="add-button">
+        <div class="compare-buttons">
+          <button class='btn' id='add-battle-1' value='1'>Add to Slot 1</button>
+          <button class='btn' id='add-battle-2' value='2'>Add to Slot 2</button>
+        </div>
         <button class='btn' id='add-pokemon'>Add to Book</button>
-        <button class='btn' id='add-battle-1' value='1'>Add to Compare 1</button>
-        <button class='btn' id='add-battle-2' value='2'>Add to Compare 2</button>
       </div>
 
 
     </div>
 
+  </div>
+
+  <div class="heading-container">
+    <h2 class='heading'>COMPARE POKEMON</h2>
   </div>
 
   <div class="compare-container">
@@ -221,17 +232,21 @@
   </div>
 
 
-
-  <div class="sort-btn-container">
-    <button class='btn' id='sort-name'>Sort by Name</button>
-    <button class='btn' id='sort-id'>Sort by Number</button>
-    <button class='btn' id='sort-gen'>Sort by Generation</button>
-    <button class='btn' id='sort-type'>Sort by Type</button>
+  <div class="heading-container">
+    <h2 class='heading'>SAVE POKEMON</h2>
   </div>
+  <div class="book-container">
 
-  <div class="card-book">
-    <!-- card 1 -->
-    <!-- <div class="mini-card">
+    <div class="sort-btn-container">
+      <button class='btn' id='sort-name'>Sort by Name</button>
+      <button class='btn' id='sort-id'>Sort by Number</button>
+      <button class='btn' id='sort-gen'>Sort by Generation</button>
+      <button class='btn' id='sort-type'>Sort by Type</button>
+    </div>
+
+    <div class="card-book">
+      <!-- card 1 -->
+      <!-- <div class="mini-card">
 
       <div class="delete-mini-card"><i class="fas fa-times fa-lg"></i></div>
 
@@ -263,6 +278,7 @@
       </div>
     </div> -->
 
+    </div>
   </div>
 
   <script src="names.js"></script>

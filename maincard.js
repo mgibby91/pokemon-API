@@ -183,10 +183,11 @@ class MainCard {
     }
   }
 
-  insertSprite = (num) => {
+  insertSprite = async (num) => {
 
     const spriteDiv = document.querySelector('.sprite');
     const img = document.createElement('img');
+
     img.setAttribute('src', `https://pokeres.bastionbot.org/images/pokemon/${num}.png`);
     spriteDiv.appendChild(img);
   }

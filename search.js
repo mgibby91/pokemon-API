@@ -8,22 +8,24 @@ class Search {
     this.searchContainer.addEventListener('click', this.addResultToMain);
   }
 
-  queryData = async () => {
+  // queryData = async () => {
 
-    this.nameSearchInput.disabled = true;
+  //   this.nameSearchInput.disabled = true;
 
-    for (let i = 1; i <= 807; i++) {
-      const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${i}/`;
-      const response = await fetch(pokeAPI);
-      const pokeData = await response.json();
-      const { types } = pokeData;
+  //   for (let i = 1; i <= 807; i++) {
+  //     const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${i}/`;
+  //     const response = await fetch(pokeAPI);
+  //     const pokeData = await response.json();
+  //     const { types } = pokeData;
 
-      typesArray.push(types);
+  //     typesArray.push(types);
 
-    }
+  //     console.log(typesArray);
+  //     // Should hard code these into an array so don't have to query on every single load
+  //   }
 
-    this.nameSearchInput.disabled = false;
-  }
+  //   this.nameSearchInput.disabled = false;
+  // }
 
   nameSearch = () => {
 
@@ -36,7 +38,7 @@ class Search {
       pokemonNamesArray.forEach((pokeName, idx) => {
         if (pokeName.includes(nameInputValue.toLowerCase())) {
 
-          this.displaySearchResults(pokeName, idx + 1, typesArray[idx]);
+          this.displaySearchResults(pokeName, idx + 1, pokemonTypesArray[idx]);
 
         }
       });
